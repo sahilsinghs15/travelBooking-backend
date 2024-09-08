@@ -33,8 +33,10 @@ app.get('/ping', (_req, res) => {
 //Import All Routes
 
 import userRoutes from "./Routes/user.routes.js";
+import travelPackageRoutes from "./Routes/travelPackage.routes.js";
 
 app.use("/api/v1/user" , userRoutes);
+app.use("/api/v1/travelPackage",travelPackageRoutes);
 
 
 // Default catch all route - 404
