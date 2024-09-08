@@ -34,10 +34,11 @@ app.get('/ping', (_req, res) => {
 
 import userRoutes from "./Routes/user.routes.js";
 import travelPackageRoutes from "./Routes/travelPackage.routes.js";
+import bookingRoutes from "./Routes/booking.routes.js";
 
 app.use("/api/v1/user" , userRoutes);
 app.use("/api/v1/travelPackage",travelPackageRoutes);
-
+app.use("/api/v1/booking",bookingRoutes);
 
 // Default catch all route - 404
 app.all('*', (_req, res) => {

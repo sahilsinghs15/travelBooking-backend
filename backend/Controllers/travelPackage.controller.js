@@ -7,7 +7,6 @@ import AppError from "../Utils/AppError.js";
  * @ROUTE @POST {{URL}}/api/v1/travelPackage/create
  * @ACCESS Public
  */
-
 export const createPackage = asynhandler(async (req, res, next) => {
     const {
         title, 
@@ -62,4 +61,98 @@ export const createPackage = asynhandler(async (req, res, next) => {
         message: "Package created successfully",
         travelPackage,
     });
+});
+
+/**
+ * @Get All Packages
+ * @ROUTE @GET {{URL}}/api/v1/travelPackage
+ * @ACCESS Public
+ */
+export const getAllPackages = asynhandler(async (req, res, next) => {
+    try {
+        const packages = await TravelPackage.find();
+        res.status(200).json({
+            success: true,
+            results: packages.length,
+            packages,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @Get Package by ID
+ * @ROUTE @GET {{URL}}/api/v1/travelPackage/:id
+ * @ACCESS Public
+ */
+export const getPackageById = asynhandler(async (req, res, next) => {
+    const { id } = req.params;
+
+    const travelPackage = await TravelPackage.findById(id);
+
+    if (!travelPackage) {
+        return next(new AppError("Package not found", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        travelPackage,
+    });
+});
+
+/**
+ * @Search Packages
+ * @ROUTE @GET {{URL}}/api/v1/travelPackage/search
+ * @ACCESS Public
+ */
+export const searchPackages = asynhandler(async (req, res, next) => {
+    const { 
+        destination, 
+        startDate, 
+        endDate, 
+        minPrice, 
+        maxPrice, 
+        minRating, 
+        maxRating 
+    } = req.query;
+
+    // Build the query object
+    let query = {};
+
+    // Apply filters based on query parameters
+    if (destination) {
+        query.destination = new RegExp(destination, 'i'); // Case-insensitive search
+    }
+    if (startDate && endDate) {
+        query.start_date = { $gte: new Date(startDate), $lte: new Date(endDate) };
+    }
+
+    // Check for minPrice and maxPrice and parse them as floats
+    if (minPrice || maxPrice) {
+        query.price = {};
+        if (minPrice) query.price.$gte = parseFloat(minPrice);
+        if (maxPrice) query.price.$lte = parseFloat(maxPrice);
+    }
+
+    // Check for ratings filters
+    if (minRating || maxRating) {
+        query.ratings = {};
+        if (minRating) query.ratings.$gte = parseFloat(minRating);
+        if (maxRating) query.ratings.$lte = parseFloat(maxRating);
+    }
+
+    try {
+        // Execute the search query
+        const packages = await TravelPackage.find(query);
+
+        // Send the response
+        res.status(200).json({
+            success: true,
+            results: packages.length,
+            packages,
+        });
+    } catch (error) {
+        next(error);
+    }
 });
