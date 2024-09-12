@@ -87,9 +87,9 @@ export const getAllPackages = asynhandler(async (req, res, next) => {
  * @ACCESS Public
  */
 export const getPackageById = asynhandler(async (req, res, next) => {
-    const { id } = req.params;
+    const { package_id } = req.params;
 
-    const travelPackage = await TravelPackage.findById(id);
+    const travelPackage = await TravelPackage.findOne(package_id);
 
     if (!travelPackage) {
         return next(new AppError("Package not found", 404));
@@ -114,7 +114,9 @@ export const searchPackages = asynhandler(async (req, res, next) => {
         minPrice, 
         maxPrice, 
         minRating, 
-        maxRating 
+        maxRating,
+        minDuration,  
+        maxDuration   
     } = req.query;
 
     // Build the query object
@@ -122,7 +124,7 @@ export const searchPackages = asynhandler(async (req, res, next) => {
 
     // Apply filters based on query parameters
     if (destination) {
-        query.destination = new RegExp(destination, 'i'); // Case-insensitive search
+        query.destination = new RegExp(destination, 'i'); 
     }
     if (startDate && endDate) {
         query.start_date = { $gte: new Date(startDate), $lte: new Date(endDate) };
@@ -142,11 +144,15 @@ export const searchPackages = asynhandler(async (req, res, next) => {
         if (maxRating) query.ratings.$lte = parseFloat(maxRating);
     }
 
-    try {
-        // Execute the search query
-        const packages = await TravelPackage.find(query);
+    // Check for duration filters
+    if (minDuration || maxDuration) {
+        query.duration = {};
+        if (minDuration) query.duration.$gte = parseInt(minDuration);
+        if (maxDuration) query.duration.$lte = parseInt(maxDuration);
+    }
 
-        // Send the response
+    try {
+        const packages = await TravelPackage.find(query);
         res.status(200).json({
             success: true,
             results: packages.length,

@@ -2,18 +2,18 @@ import { Schema, model } from 'mongoose';
 
 const bookingSchema = new Schema({
     user: {
-        type: Schema.Types.ObjectId, // Link to User model
-        ref: 'User', // Reference to User collection
+        type: Schema.Types.ObjectId, 
+        ref: 'User', 
         required: true,
     },
     travelPackage: {
-        type: Schema.Types.ObjectId, // Link to TravelPackage model
-        ref: 'TravelPackage', // Reference to TravelPackage collection
+        type: Schema.Types.ObjectId, 
+        ref: 'TravelPackage', 
         required: true,
     },
     bookingDate: {
         type: Date,
-        default: Date.now, // Automatically store the date when the booking was created
+        default: Date.now, 
     },
     travelDate: {
         type: Date,
@@ -32,7 +32,7 @@ const bookingSchema = new Schema({
             },
             gender: {
                 type: String,
-                enum: ['male', 'female', 'other'], // Optional, to restrict gender options
+                enum: ['male', 'female', 'other'], 
                 required: [true, 'Please select gender'],
             }
         }
@@ -44,11 +44,11 @@ const bookingSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'confirmed', 'cancelled'], // Booking status
+        enum: ['pending', 'confirmed', 'cancelled'],
         default: 'pending',
     },
 }, {
-    timestamps: true, // Automatically adds createdAt and updatedAt fields
+    timestamps: true, 
 });
 
 const Booking = model('Booking', bookingSchema);

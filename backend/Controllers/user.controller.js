@@ -143,7 +143,7 @@ export const getLoggedInUserDetails = asynhandler(async (req, res, _next) => {
   res.status(200).json({
     success: true,
     message: 'User details',
-    user,
+    user : {id : user._id , fullName : user.fullName , email : user.email , phoneNumber : user.phoneNumber},
   });
 });
 
@@ -315,10 +315,10 @@ export const changePassword = asynhandler(async (req, res, next) => {
  */
 export const updateUser = asynhandler(async (req, res, next) => {
   // Destructuring the necessary data from the req object
-  const { fullName } = req.body;
+  const { fullName , email , phoneNumber } = req.body;
   const { id } = req.params;
 
-  const user = await User.findById(id);
+  const user = await User.findByIdAndUpdate(id);
 
   if (!user) {
     return next(new AppError('Invalid user id or user does not exist') , 400);
@@ -326,6 +326,14 @@ export const updateUser = asynhandler(async (req, res, next) => {
 
   if (fullName) {
     user.fullName = fullName;
+  }
+
+  if(email){
+    user.email = email;
+  }
+
+  if(phoneNumber){
+    user.phoneNumber = phoneNumber;
   }
 
   // Save the user object

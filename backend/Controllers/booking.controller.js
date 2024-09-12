@@ -24,7 +24,7 @@ export const createBooking = asynhandler(async (req, res, next) => {
 
     // Create the booking
     const booking = await Booking.create({
-        user: req.user._id, // Automatically get the user from middleware
+        user: req.user._id,
         travelPackage: travelPackage._id,
         travelDate,
         travelerDetails,
@@ -49,7 +49,7 @@ export const getBookings = asynhandler(async (req, res, next) => {
     res.status(200).json({
         success: true,
         results: bookings.length,
-        bookings,
+        bookings ,
     });
 });
 

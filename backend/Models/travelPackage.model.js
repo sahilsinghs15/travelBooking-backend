@@ -1,6 +1,10 @@
 import { Schema, model } from "mongoose";
 
 const travelPackageSchema = new Schema({
+
+    package_id: {
+        type: Number,
+    },
     
     title: {
         type: String,
@@ -22,7 +26,7 @@ const travelPackageSchema = new Schema({
         min: [0, 'Price cannot be negative'],
     },
     duration: {
-        type: String, 
+        type: Number, 
         required: [true, 'Duration is required'],
         trim: true,
     },
@@ -59,15 +63,21 @@ const travelPackageSchema = new Schema({
         }
     ],
     inclusions: {
-        type: [String], // Array of strings
+        type: [String], 
         required: [true, 'Inclusions are required'],
     },
     exclusions: {
-        type: [String], // Array of strings
+        type: [String], 
         required: [true, 'Exclusions are required'],
     }
 }, {
-    timestamps: true, // Automatically manages createdAt and updatedAt
+    timestamps: true, 
+});
+
+travelPackageSchema.pre('save', async function (next) {
+  const count = await TravelPackage.countDocuments();
+  this.package_id = count + 2;
+  next();
 });
 
 const TravelPackage = model("TravelPackage", travelPackageSchema);

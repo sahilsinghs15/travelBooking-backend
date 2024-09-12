@@ -30,11 +30,13 @@ app.get('/ping', (_req, res) => {
   res.send('Pong');
 });
 
+
 //Import All Routes
 
 import userRoutes from "./Routes/user.routes.js";
 import travelPackageRoutes from "./Routes/travelPackage.routes.js";
 import bookingRoutes from "./Routes/booking.routes.js";
+
 
 app.use("/api/v1/user" , userRoutes);
 app.use("/api/v1/travelPackage",travelPackageRoutes);
@@ -47,6 +49,7 @@ app.all('*', (_req, res) => {
 
 // Custom error handling middleware
 app.use(errorMiddleware);
+
 
 export default app;
 

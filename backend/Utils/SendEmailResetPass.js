@@ -3,7 +3,7 @@ configDotenv();
 import nodemailer from "nodemailer";
 
 const sendEmailPassReset = async function (email, subject, message) {
-  // create reusable transporter object using the default SMTP transport
+ 
   let transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
@@ -14,7 +14,6 @@ const sendEmailPassReset = async function (email, subject, message) {
     },
   });
 
-  // send mail with defined transport object
   try {
   await transporter.sendMail({
     from: process.env.SMTP_FROM_EMAIL,
