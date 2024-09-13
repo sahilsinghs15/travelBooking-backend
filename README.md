@@ -23,13 +23,16 @@ To set up the backend server locally, follow these steps:
 ```
 ### Install dependencies:
 ```
-  npm install
+  npm install -D nodemon
+  npm install cors bcrypt crypto-js cookie-parser morgan express jsonwebtoken mongoose dotenv express-async-handler
 ```
 ### Set up environment variables:
 
 ## Create a .env file in the root directory and add the following:
 
 #env
+
+## I have stored travelpackages inside my mongodb database so use my Mongodb URI Given in the email.
 
 ```
   MONGO_URI=your_mongo_connection_string
