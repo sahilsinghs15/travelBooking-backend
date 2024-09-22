@@ -5,9 +5,9 @@ import User from '../Models/user.model.js';
 
 export const isLoggedIn = asynhandler(async (req, _res, next) => {
   // extracting token from the cookies
+  console.log("Cookies :" , req.cookies);
   const { token } = req.cookies;
 
-  console.log("Token : " , token);
   // If no token, send unauthorized message
   if (!token) {
     return next(new AppError("Token not received - Unauthorized, please login to continue", 401));
