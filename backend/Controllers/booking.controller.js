@@ -5,7 +5,7 @@ import AppError from '../Utils/AppError.js';
 
 /**
  * @CreateBooking
- * @ROUTE POST /api/v1/bookings
+ * @ROUTE POST /api/v1/booking
  * @ACCESS Private (User must be logged in)
  */
 export const createBooking = asynhandler(async (req, res, next) => {
@@ -40,7 +40,7 @@ export const createBooking = asynhandler(async (req, res, next) => {
 
 /**
  * @GetBookings
- * @ROUTE GET /api/v1/bookings
+ * @ROUTE GET /api/v1/booking
  * @ACCESS Private (User must be logged in)
  */
 export const getBookings = asynhandler(async (req, res, next) => {
@@ -55,7 +55,7 @@ export const getBookings = asynhandler(async (req, res, next) => {
 
 /**
  * @UpdateBooking
- * @ROUTE PATCH /api/v1/bookings/:id
+ * @ROUTE PATCH /api/v1/booking/:id
  * @ACCESS Private (User must be logged in)
  */
 export const updateBooking = asynhandler(async (req, res, next) => {
